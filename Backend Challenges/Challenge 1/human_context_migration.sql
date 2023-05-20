@@ -58,7 +58,7 @@ CREATE TABLE `employee` (
   `birth_date` date NOT NULL,
   `hire_date` date NOT NULL,
   `shift_id` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `employee`
@@ -83,7 +83,44 @@ INSERT INTO `employee` (`name`, `email`, `gender`, `birth_date`, `hire_date`, `s
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `schedules`
+--
 
+CREATE TABLE `schedules` (
+  `schedule_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` INT(11)  NOT NULL,
+  `location_id` SMALLINT(5) NOT NULL,
+  `shift_id` SMALLINT(5) NOT NULL,
+  `schedule_date` DATE NOT NULL,
+  PRIMARY KEY (`schedule_id`),
+  KEY `schedules_employee_id_index` (`employee_id`),
+  KEY `schedules_location_id_index` (`location_id`),
+  KEY `schedules_shift_id_index` (`shift_id`),
+  CONSTRAINT `schedules_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`),
+  CONSTRAINT `schedules_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`),
+  CONSTRAINT `schedules_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `shifts` (`shift_id`)
+) ENGINE=INNODB DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_faults`
+--
+
+CREATE TABLE `attendance_faults` (
+  `attendance_fault_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `attendance_id` INT(11) NOT NULL,
+  `employee_id` INT(11) NOT NULL,
+  `attendance_fault_destination` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`attendance_fault_id`),
+  KEY `attendance_faults_attendance_id_index` (`attendance_id`),
+  KEY `attendance_faults_employee_id_index` (`employee_id`),
+  CONSTRAINT `attendance_faults_attendance_id_foreign` FOREIGN KEY (`attendance_id`) REFERENCES `attendances` (`attendance_id`),
+  CONSTRAINT `attendance_faults_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
+) ENGINE=INNODB DEFAULT CHARSET=latin1;
+
+
+----------------------------------------------------------
 --
 -- Table structure for table `location`
 --
